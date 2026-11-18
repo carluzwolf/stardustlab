@@ -306,3 +306,18 @@ section { position: relative; }
   .disp-float, .disp-shadow, .reel-track, .scroll-hint i { animation: none !important; }
   .rv { opacity: 1; transform: none; transition: none; }
 }
+
+/* ===== em breve / fundador ===== */
+.soon { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 9px 16px; border-radius: 999px; background: var(--pink-soft); border: 1px solid #ffd3ec; color: var(--pink); font-weight: 700; font-size: 14px; }
+.soon i { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,20,147,.5); } 50% { box-shadow: 0 0 0 8px rgba(255,20,147,0); } }
+.founder { display: flex; align-items: center; gap: 22px; max-width: 760px; margin: 0 auto; padding: 28px; background: #fff; border: 1px solid var(--line); border-radius: 28px; }
+.founder .av { flex: none; width: 84px; height: 84px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff4ec4, #ff1493); display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 30px; letter-spacing: -.03em; }
+.founder h3 { font-size: 24px; margin-bottom: 4px; }
+.founder p { color: var(--ink-2); }
+.founder a.ig { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; color: var(--pink); font-weight: 700; }
+@media (max-width: 560px) { .founder { flex-direction: column; text-align: center; } }
+.pcard .badge { background: var(--ink); }
+.hero .soon { margin-top: 0; margin-bottom: 4px; }
+@media (max-width: 900px) { .hero .soon { margin-top: 6px; } }
+.hdr .logo img, .ftr img { mix-blend-mode: multiply; }
