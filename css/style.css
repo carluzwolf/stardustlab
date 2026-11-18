@@ -321,3 +321,6 @@ section { position: relative; }
 .hero .soon { margin-top: 0; margin-bottom: 4px; }
 @media (max-width: 900px) { .hero .soon { margin-top: 6px; } }
 .hdr .logo img, .ftr img { mix-blend-mode: multiply; }
+
+.banner { width: 100%; height: auto; border-radius: 32px; border: 1px solid var(--line); box-shadow: 0 40px 80px -40px rgba(255,20,147,.35); }
+@media (max-width: 600px) { .banner { border-radius: 20px; } }
