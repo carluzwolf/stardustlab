@@ -7,7 +7,11 @@ window.STARDUST = {
   instagramHandle: '@stardust.ino',
   email: '',          // ex.: 'contato@stardustlabs.com.br'  (deixe '' para esconder)
   whatsapp: '',       // ex.: '5511999999999'  (so numeros, com DDI+DDD). Se preencher, o botao Comprar usa o WhatsApp.
-  currency: 'R$'
+  currency: 'R$',
+  launch: '2027',     // previsao de lancamento
+  founder: 'Carlos Henrique',
+  founderInstagram: 'https://instagram.com/carluzsnt',
+  founderHandle: '@carluzsnt'
 };
 
 window.KARLU_PRODUCTS = [
@@ -15,14 +19,13 @@ window.KARLU_PRODUCTS = [
     id: 'v1',
     name: 'Karlu V1',
     tag: 'Essencial',
-    price: 249.9,
-    buyUrl: '',     // link de checkout (Mercado Pago, Stripe, Yampi, etc.). Vazio = usa WhatsApp/Instagram.
+    price: null,   // preco a definir (quando fechar, ex.: 249.9)
     face: 1,        // cor dos olhos (0-23, igual ao firmware)
     react: ['happy', 'wink', 'cute'],
     holdReact: 'happy',
     tagline: 'O olhar que ganha vida.',
-    short: 'O robozinho de olhos animados. Display redondo, 78 reações e a personalidade que faz toda mesa sorrir.',
-    long: 'A versão essencial do Karlu traz o coração do projeto: um display redondo de olhos expressivos que piscam, olham em volta, mudam de humor e reagem sozinhos. Perfeito para decorar, presentear e começar a sua coleção.',
+    short: 'O bichinho virtual de olhos animados para levar no chaveiro, na mochila ou na calça. Display redondo e 78 reações.',
+    long: 'A versão essencial do Karlu traz o coração do projeto: um bichinho virtual de olhos expressivos que piscam, olham em volta, mudam de humor e reagem sozinhos. Um acessório tecnológico para levar com você e começar a sua coleção.',
     features: [
       'Display redondo 1,28" com olhos animados em alta definição',
       '24 combinações de cores de olhos (inclusive heterocromia)',
@@ -37,9 +40,7 @@ window.KARLU_PRODUCTS = [
     id: 'v2',
     name: 'Karlu V2',
     tag: 'Voz e som',
-    badge: true,
-    price: 399.9,
-    buyUrl: '',
+    price: null,   // preco a definir (quando fechar, ex.: 249.9)
     face: 2,
     react: ['curious', 'cute', 'wink'],
     holdReact: 'curious',
@@ -59,8 +60,7 @@ window.KARLU_PRODUCTS = [
     id: 'v3',
     name: 'Karlu V3',
     tag: 'Completo',
-    price: 649.9,
-    buyUrl: '',
+    price: null,   // preco a definir (quando fechar, ex.: 249.9)
     face: 20,
     react: ['surprise', 'dizzy', 'think'],
     holdReact: 'surprise',
