@@ -33,7 +33,7 @@
   hdr.className = 'hdr';
   hdr.innerHTML = '<div class="wrap"><a class="logo" href="index.html" aria-label="Stardust Labs"><img src="assets/logo-color.png" alt="Stardust Labs" width="66" height="40"></a>' +
     '<nav class="nav">' + nav('index.html', 'Início', 'index') + nav('sobre.html', 'Stardust', 'sobre') + nav('karlu.html', 'Projeto Karlu', 'karlu') +
-    '<a href="index.html#modelos" class="cta">Comprar</a></nav><button class="burger" aria-label="Abrir menu"><span></span></button></div>';
+    '<a href="index.html#modelos" class="cta">Ver modelos</a></nav><button class="burger" aria-label="Abrir menu"><span></span></button></div>';
   document.body.insertBefore(hdr, document.body.firstChild);
   $('.burger', hdr).addEventListener('click', function () { document.body.classList.toggle('menu-open'); });
   $$('.nav a', hdr).forEach(function (a) { a.addEventListener('click', function () { document.body.classList.remove('menu-open'); }); });
@@ -45,11 +45,11 @@
   var contact = '<li><a href="' + C.instagram + '" target="_blank" rel="noopener">Instagram ' + C.instagramHandle + '</a></li>' +
     (C.whatsapp ? '<li><a href="https://wa.me/' + C.whatsapp + '" target="_blank" rel="noopener">WhatsApp</a></li>' : '') +
     (C.email ? '<li><a href="mailto:' + C.email + '">' + C.email + '</a></li>' : '');
-  ftr.innerHTML = '<div class="wrap"><div class="row"><div><img src="assets/logo-bw.png" alt="Stardust Labs" width="88" height="52"><p>Criamos robôs com olhos que sentem. O Karlu é o primeiro da família Stardust.</p></div>' +
+  ftr.innerHTML = '<div class="wrap"><div class="row"><div><img src="assets/logo-bw.png" alt="Stardust Labs" width="88" height="52"><p>Tecnologia brasileira, criada em Salvador, Bahia. O Karlu é o primeiro projeto da Stardust Labs.</p></div>' +
     '<div><h4>Navegar</h4><ul><li><a href="index.html">Início</a></li><li><a href="sobre.html">Sobre a Stardust</a></li><li><a href="karlu.html">Projeto Karlu</a></li></ul></div>' +
     '<div><h4>Modelos</h4><ul>' + P.map(function (p) { return '<li><a href="produto.html?v=' + p.id + '">' + p.name + '</a></li>'; }).join('') + '</ul></div>' +
     '<div><h4>Contato</h4><ul>' + contact + '</ul></div></div>' +
-    '<div class="copy"><span>© ' + new Date().getFullYear() + ' Stardust Labs. Todos os direitos reservados.</span><span>Feito com olhos bem abertos.</span></div></div>';
+    '<div class="copy"><span>© ' + new Date().getFullYear() + ' Stardust Labs. Todos os direitos reservados.</span><span>Feita no Brasil, em Salvador (BA).</span></div></div>';
   document.body.appendChild(ftr);
 
   /* ---------- display 3D ---------- */
@@ -149,11 +149,11 @@
   /* ---------- cards de anuncio ---------- */
   function cardHTML(p) {
     return '<a class="pcard rv" href="produto.html?v=' + p.id + '" aria-label="' + p.name + '">' +
-      (p.badge ? '<span class="badge">Mais vendido</span>' : '') + '<span class="tagpill">' + p.tag + '</span>' +
+      '<span class="badge">Em breve</span>' + '<span class="tagpill">' + p.tag + '</span>' +
       '<div class="studio"><div class="floor"></div><div class="disp" data-mode="studio" data-face="' + p.face + '" data-react="' + p.holdReact + '" data-gap="500,1100" data-float="0"></div><div class="glint"></div></div>' +
       '<div class="body"><h3>' + p.name + '</h3><div class="tl">' + p.tagline + '</div><p>' + p.short + '</p>' +
-      '<div class="price"><b>' + money(p.price) + '</b></div>' +
-      '<span class="btn btn-pink btn-block" style="margin-top:8px">Comprar ' + ICON.arrow + '</span></div></a>';
+      '<div class="price"><b>Em breve</b><small>Preço a definir</small></div>' +
+      '<span class="btn btn-pink btn-block" style="margin-top:8px">Ver detalhes ' + ICON.arrow + '</span></div></a>';
   }
   $$('[data-cards]').forEach(function (box) {
     var skip = box.dataset.skip === 'auto' ? (new URLSearchParams(location.search).get('v') || 'v1').toLowerCase() : box.dataset.skip;
@@ -165,7 +165,7 @@
   $$('[data-compare]').forEach(function (box) {
     box.innerHTML = '<div class="cmp-wrap"><table class="cmp"><thead><tr><th></th>' + P.map(function (p) { return '<th>' + p.name + '</th>'; }).join('') + '</tr></thead><tbody>' +
       CMP.map(function (r) { return '<tr><td>' + r[0] + '</td>' + r[1].map(function (v) { return '<td>' + (v ? '<span class="y">✓</span>' : '<span class="n">—</span>') + '</td>'; }).join('') + '</tr>'; }).join('') +
-      '</tbody><tfoot><tr><td></td>' + P.map(function (p) { return '<td style="padding:18px 8px"><b>' + money(p.price) + '</b></td>'; }).join('') + '</tr></tfoot></table></div>';
+      '</tbody><tfoot><tr><td></td>' + P.map(function (p) { return '<td style="padding:18px 8px"><b>Em breve</b></td>'; }).join('') + '</tr></tfoot></table></div>';
   });
 
   /* ---------- faixa de expressoes ---------- */
@@ -186,27 +186,26 @@
       var c = FC[i], a = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')', b = 'rgb(' + c[6] + ',' + c[7] + ',' + c[8] + ')';
       return '<button class="sw' + (i === p.face ? ' on' : '') + '" data-face="' + i + '" aria-label="Cor ' + i + '" style="background:linear-gradient(90deg,' + a + ' 50%,' + b + ' 50%)"></button>';
     }).join('');
-    var buy = buyLink(p), ext = /^https?:/.test(buy);
-    pp.innerHTML =
+        pp.innerHTML =
       '<div class="wrap"><div class="pp-gallery"><div class="studio big"><div class="floor"></div><div class="disp" data-mode="drag" data-face="' + p.face + '" data-react="' + p.react.join(',') + '" data-gap="900,2200" data-float="0"></div></div>' +
       '<p class="pp-hint">Arraste para girar o Karlu · <button id="spin1" style="color:var(--pink);font-weight:700">girar 360°</button></p></div>' +
       '<div class="pp-info"><div class="crumb"><a href="index.html">Início</a> / <a href="index.html#modelos">Modelos</a> / ' + p.name + '</div>' +
       '<span class="eyebrow">' + p.tag + '</span><h1>' + p.name + '</h1><div class="tl">' + p.tagline + '</div><p class="desc">' + p.long + '</p>' +
-      '<div class="pp-price"><b>' + money(p.price) + '</b></div>' +
+      '<div class="pp-price"><b>Em breve</b><small>Preço a definir · lançamento previsto para ' + C.launch + '</small></div>' +
       '<div class="swatches"><label>Escolha o olhar</label><div class="sw-row">' + swHTML + '</div></div>' +
-      '<div class="pp-buy"><a class="btn btn-pink btn-lg btn-block" href="' + buy + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '>Comprar ' + p.name + '</a>' +
-      '<a class="btn btn-ghost btn-block" href="' + C.instagram + '" target="_blank" rel="noopener">Falar com a Stardust no Instagram</a></div>' +
+      '<div class="pp-buy"><a class="btn btn-pink btn-lg btn-block" href="' + C.instagram + '" target="_blank" rel="noopener">Quero ser avisado do lançamento</a>' +
+      '<a class="btn btn-ghost btn-block" href="index.html#modelos">Ver os outros modelos</a></div>' +
       '<ul class="list">' + p.features.map(function (f) { return '<li>' + f + '</li>'; }).join('') + '</ul>' +
-      '<div class="trust"><span>✓ Controle por Bluetooth</span><span>✓ Alimentação USB-C</span><span>✓ Suporte Stardust</span></div></div></div>';
+      '<div class="trust"><span>✓ Controle por Bluetooth</span><span>✓ Criado em Salvador (BA)</span><span>✓ Tecnologia 100% brasileira</span></div></div></div>';
     var dEl = $('.disp', pp), d = buildDisp(dEl);
     $$('.sw', pp).forEach(function (b) { b.addEventListener('click', function () { $$('.sw', pp).forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on'); d.setFace(parseInt(b.dataset.face, 10)); d.trigger('cute'); }); });
     $('#spin1').addEventListener('click', function () { if (dEl.__item) dEl.__item.spinOnce(); d.trigger('spin'); });
     var fq = $('#faq-list');
     if (fq) fq.innerHTML = [
-      ['Como o Karlu é alimentado?', 'O Karlu funciona ligado por USB-C (por exemplo, a um carregador de celular ou ao computador). Ao ligar, ele mostra a marca Stardust Labs e já começa a reagir.'],
+      ['Quando o Karlu será lançado?', 'O Karlu está em desenvolvimento e o lançamento está previsto para ' + C.launch + '. Siga a Stardust no Instagram ' + C.instagramHandle + ' para acompanhar as novidades em primeira mão.'],
+      ['Quanto vai custar?', 'O preço de cada versão ainda será definido. Assim que for anunciado, ele aparece aqui, na página de cada modelo.'],
       ['Como troco a cor dos olhos?', 'Pelo Bluetooth você escolhe entre 24 combinações de cores e dispara qualquer uma das 78 reações. O Karlu também troca de rosto sozinho, com uma nuvem de fumaça, a cada 1 a 3 minutos.'],
-      ['Qual a diferença entre a V1, a V2 e a V3?', 'A V1 é o display de olhos animados. A V2 adiciona microfone com amplificador de voz e alto-falante. A V3 soma giroscópio e câmera, para reagir ao movimento e aos seus gestos.'],
-      ['Como compro?', 'Clique em “Comprar”. Se tiver dúvidas, chame a Stardust no Instagram ' + C.instagramHandle + '.']
+      ['Qual a diferença entre a V1, a V2 e a V3?', 'A V1 é o bichinho virtual de olhos animados. A V2 adiciona microfone com amplificador de voz e alto-falante. A V3 soma giroscópio e câmera, para reagir ao movimento e aos seus gestos.']
     ].map(function (q) { return '<details><summary>' + q[0] + '</summary><p>' + q[1] + '</p></details>'; }).join('');
   }
 
@@ -223,3 +222,4 @@
   // cards inseridos depois do primeiro passe
   setTimeout(function () { $$('.rv:not(.in)').forEach(function (el) { if (!('IntersectionObserver' in window)) el.classList.add('in'); }); }, 0);
 })();
+    
