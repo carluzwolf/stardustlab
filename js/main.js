@@ -1,7 +1,7 @@
-/* Stardust Labs - comportamento do site */
+/* Starlyn Infinite - comportamento do site */
 (function () {
   'use strict';
-  var C = window.STARDUST, P = window.KARLU_PRODUCTS, CMP = window.KARLU_COMPARE;
+  var C = window.STARLYN, P = window.KARLU_PRODUCTS, CMP = window.KARLU_COMPARE;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -31,8 +31,8 @@
   function nav(h, label, key) { return '<a href="' + h + '"' + (path === key ? ' class="on"' : '') + '>' + label + '</a>'; }
   var hdr = document.createElement('header');
   hdr.className = 'hdr';
-  hdr.innerHTML = '<div class="wrap"><a class="logo" href="index.html" aria-label="Stardust Labs"><img src="assets/logo-color.png" alt="Stardust Labs" width="66" height="40"></a>' +
-    '<nav class="nav">' + nav('index.html', 'Início', 'index') + nav('sobre.html', 'Stardust', 'sobre') + nav('karlu.html', 'Projeto Karlu', 'karlu') +
+  hdr.innerHTML = '<div class="wrap"><a class="logo" href="index.html" aria-label="Starlyn Infinite"><img src="assets/logo-color.png" alt="Starlyn Infinite" width="63" height="40"></a>' +
+    '<nav class="nav">' + nav('index.html', 'Início', 'index') + nav('sobre.html', 'Starlyn', 'sobre') + nav('karlu.html', 'Projeto Karlu', 'karlu') +
     '<a href="index.html#modelos" class="cta">Ver modelos</a></nav><button class="burger" aria-label="Abrir menu"><span></span></button></div>';
   document.body.insertBefore(hdr, document.body.firstChild);
   $('.burger', hdr).addEventListener('click', function () { document.body.classList.toggle('menu-open'); });
@@ -45,11 +45,11 @@
   var contact = '<li><a href="' + C.instagram + '" target="_blank" rel="noopener">Instagram ' + C.instagramHandle + '</a></li>' +
     (C.whatsapp ? '<li><a href="https://wa.me/' + C.whatsapp + '" target="_blank" rel="noopener">WhatsApp</a></li>' : '') +
     (C.email ? '<li><a href="mailto:' + C.email + '">' + C.email + '</a></li>' : '');
-  ftr.innerHTML = '<div class="wrap"><div class="row"><div><img src="assets/logo-bw.png" alt="Stardust Labs" width="88" height="52"><p>Tecnologia brasileira, criada em Salvador, Bahia. O Karlu é o primeiro projeto da Stardust Labs.</p></div>' +
-    '<div><h4>Navegar</h4><ul><li><a href="index.html">Início</a></li><li><a href="sobre.html">Sobre a Stardust</a></li><li><a href="karlu.html">Projeto Karlu</a></li></ul></div>' +
+  ftr.innerHTML = '<div class="wrap"><div class="row"><div><img src="assets/logo-bw.png" alt="Starlyn Infinite" width="88" height="56"><p>Tecnologia brasileira, criada em Salvador, Bahia. O Karlu é o primeiro projeto da Starlyn Infinite.</p></div>' +
+    '<div><h4>Navegar</h4><ul><li><a href="index.html">Início</a></li><li><a href="sobre.html">Sobre a Starlyn Infinite</a></li><li><a href="karlu.html">Projeto Karlu</a></li></ul></div>' +
     '<div><h4>Modelos</h4><ul>' + P.map(function (p) { return '<li><a href="produto.html?v=' + p.id + '">' + p.name + '</a></li>'; }).join('') + '</ul></div>' +
     '<div><h4>Contato</h4><ul>' + contact + '</ul></div></div>' +
-    '<div class="copy"><span>© ' + new Date().getFullYear() + ' Stardust Labs. Todos os direitos reservados.</span><span>Feita no Brasil, em Salvador (BA).</span></div></div>';
+    '<div class="copy"><span>© ' + new Date().getFullYear() + ' Starlyn Infinite. Todos os direitos reservados.</span><span>Feita no Brasil, em Salvador (BA).</span></div></div>';
   document.body.appendChild(ftr);
 
   /* ---------- display 3D ---------- */
@@ -180,7 +180,7 @@
   if (pp) {
     var id = (new URLSearchParams(location.search).get('v') || 'v1').toLowerCase();
     var p = P.filter(function (x) { return x.id === id; })[0] || P[0];
-    document.title = p.name + ' | Stardust Labs';
+    document.title = p.name + ' | Starlyn Infinite';
     var FC = KarluEyes.FACES, sw = [0, 1, 2, 3, 4, 5, 6, 14, 16, 20, 18, 10];
     var swHTML = sw.map(function (i) {
       var c = FC[i], a = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')', b = 'rgb(' + c[6] + ',' + c[7] + ',' + c[8] + ')';
@@ -202,7 +202,7 @@
     $('#spin1').addEventListener('click', function () { if (dEl.__item) dEl.__item.spinOnce(); d.trigger('spin'); });
     var fq = $('#faq-list');
     if (fq) fq.innerHTML = [
-      ['Quando o Karlu será lançado?', 'O Karlu está em desenvolvimento e o lançamento está previsto para ' + C.launch + '. Siga a Stardust no Instagram ' + C.instagramHandle + ' para acompanhar as novidades em primeira mão.'],
+      ['Quando o Karlu será lançado?', 'O Karlu está em desenvolvimento e o lançamento está previsto para ' + C.launch + '. Siga a Starlyn Infinite no Instagram ' + C.instagramHandle + ' para acompanhar as novidades em primeira mão.'],
       ['Quanto vai custar?', 'O preço de cada versão ainda será definido. Assim que for anunciado, ele aparece aqui, na página de cada modelo.'],
       ['Como troco a cor dos olhos?', 'Pelo Bluetooth você escolhe entre 24 combinações de cores e dispara qualquer uma das 78 reações. O Karlu também troca de rosto sozinho, com uma nuvem de fumaça, a cada 1 a 3 minutos.'],
       ['Qual a diferença entre a V1, a V2 e a V3?', 'A V1 é o bichinho virtual de olhos animados. A V2 adiciona microfone com amplificador de voz e alto-falante. A V3 soma giroscópio e câmera, para reagir ao movimento e aos seus gestos.']
@@ -222,4 +222,3 @@
   // cards inseridos depois do primeiro passe
   setTimeout(function () { $$('.rv:not(.in)').forEach(function (el) { if (!('IntersectionObserver' in window)) el.classList.add('in'); }); }, 0);
 })();
-    
