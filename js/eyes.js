@@ -1,4 +1,4 @@
-/* Stardust Labs - motor de olhos do Karlu (porte do firmware v8 para canvas 2D)
+/* Starlyn Infinite - motor de olhos do Karlu (porte do firmware v8 para canvas 2D)
  * Mesmo modelo de rosto: dois ovais inclinados + pupila, fundo preto, 24 combinacoes de cor.
  * Uso: new KarluEyes(canvas, { face: 0..23, reacts: ['happy','wink'], dpr: 2 })
  */
