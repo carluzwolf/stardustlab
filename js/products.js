@@ -2,10 +2,10 @@
  * CONFIGURACAO DO SITE - edite aqui precos, textos e links.
  * (Tudo abaixo e exemplo: ajuste quando os valores estiverem fechados.)
  * ============================================================ */
-window.STARDUST = {
-  instagram: 'https://instagram.com/stardust.ino',
-  instagramHandle: '@stardust.ino',
-  email: '',          // ex.: 'contato@stardustlabs.com.br'  (deixe '' para esconder)
+window.STARLYN = {
+  instagram: 'https://instagram.com/starlyninfinite',
+  instagramHandle: '@starlyninfinite',
+  email: '',          // ex.: 'contato@starlyninfinite.com.br'  (deixe '' para esconder)
   whatsapp: '',       // ex.: '5511999999999'  (so numeros, com DDI+DDD). Se preencher, o botao Comprar usa o WhatsApp.
   currency: 'R$',
   launch: '2027',     // previsao de lancamento
@@ -33,7 +33,7 @@ window.KARLU_PRODUCTS = [
       'Piscadas, olhares e humores naturais, nunca repetitivos',
       'Troca de rosto com nuvem de fumaça a cada 1 a 3 minutos',
       'Controle por Bluetooth: escolha cores e reações do celular',
-      'Animação de abertura com a marca Stardust Labs'
+      'Animação de abertura com a marca Starlyn Infinite'
     ]
   },
   {
