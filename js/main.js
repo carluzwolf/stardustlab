@@ -49,7 +49,7 @@
     '<div><h4>Navegar</h4><ul><li><a href="index.html">Início</a></li><li><a href="sobre.html">Sobre a Starlyn Infinite</a></li><li><a href="karlu.html">Projeto Karlu</a></li></ul></div>' +
     '<div><h4>Modelos</h4><ul>' + P.map(function (p) { return '<li><a href="produto.html?v=' + p.id + '">' + p.name + '</a></li>'; }).join('') + '</ul></div>' +
     '<div><h4>Contato</h4><ul>' + contact + '</ul></div></div>' +
-    '<div class="copy"><span>© ' + new Date().getFullYear() + ' Starlyn Infinite. Todos os direitos reservados.</span><span>Feita no Brasil, em Salvador (BA).</span></div></div>';
+    '<div class="copy"><span>© ' + new Date().getFullYear() + ' Starlyn Infinite. Todos os direitos reservados.</span><span class="legal-links"><a href="terms.html">Termos de Serviço</a> · <a href="privacy.html">Política de Privacidade</a></span><span>Feita no Brasil, em Salvador (BA).</span></div></div>';
   document.body.appendChild(ftr);
 
   /* ---------- display 3D ---------- */
@@ -222,3 +222,4 @@
   // cards inseridos depois do primeiro passe
   setTimeout(function () { $$('.rv:not(.in)').forEach(function (el) { if (!('IntersectionObserver' in window)) el.classList.add('in'); }); }, 0);
 })();
+    
