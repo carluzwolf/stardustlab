@@ -18,6 +18,10 @@
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/configurar.css">
+<link rel="stylesheet" href="css/extras.css">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script>try{var t=localStorage.getItem('karlu.theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
 
@@ -45,6 +49,8 @@
       <button type="button" id="q-blink"><span data-i="eye"></span>Piscar</button>
       <button type="button" id="q-random"><span data-i="dice"></span>Surpresa</button>
       <button type="button" id="q-charge"><span data-i="bolt"></span>Carregando</button>
+      <button type="button" class="share-photo"><span data-i="cam"></span>Foto</button>
+      <button type="button" class="share-clip"><span data-i="vid"></span>Clipe</button>
     </div>
   </aside>
 
@@ -56,6 +62,8 @@
       <button data-tab="gaze" type="button"><span data-i="target"></span>Olhar</button>
       <button data-tab="fine" type="button"><span data-i="sliders"></span>Ajustes</button>
       <button data-tab="auto" type="button"><span data-i="cpu"></span>Modo</button>
+      <button data-tab="fav" type="button"><span data-i="star"></span>Favoritos</button>
+      <button data-tab="presets" type="button"><span data-i="save"></span>Presets</button>
     </div>
 
     <div class="cfg-pane on" id="pane-faces">
@@ -99,6 +107,25 @@
       <label class="cfg-sw big"><input type="checkbox" id="a-blink" checked><span></span>Piscar sozinho</label>
       <label class="cfg-sw big"><input type="checkbox" id="a-gaze" checked><span></span>Olhar sozinho</label>
       <label class="cfg-sw big"><input type="checkbox" id="a-mic" checked><span></span>Reagir ao microfone</label>
+      <label class="cfg-sw big"><input type="checkbox" id="a-snd"><span></span>Sons na pré-visualização</label>
+      <p class="cfg-note">Os sons tocam só aqui no site, não no Karlu.</p>
+      <div class="cfg-sub">Compartilhar</div>
+      <div class="cfg-quick" style="display:grid"><button type="button" class="share-photo"><span data-i="cam"></span>Foto</button><button type="button" class="share-clip"><span data-i="vid"></span>Clipe de 4s</button></div>
+    </div>
+
+    <div class="cfg-pane" id="pane-fav">
+      <h3>Favoritos</h3>
+      <div class="cfg-sub">Rostos</div>
+      <div class="face-grid" id="fav-faces"></div>
+      <div class="cfg-sub">Reações</div>
+      <div class="rx-grid" id="fav-rx"></div>
+    </div>
+
+    <div class="cfg-pane" id="pane-presets">
+      <h3>Meus presets</h3>
+      <p class="cfg-hint">Salve o rosto, a cor, os ajustes e o modo atuais com um nome e aplique de novo com um toque. Ficam guardados neste navegador.</p>
+      <div class="ps-new"><input id="ps-name" maxlength="30" placeholder="Nome do preset" aria-label="Nome do preset"><button class="btn btn-pink" id="ps-save" type="button">Salvar</button></div>
+      <div class="ps-list" id="ps-list"></div>
     </div>
   </section>
 </main>
@@ -110,6 +137,8 @@
 <script src="js/main.js"></script>
 <script src="js/reacoes.js"></script>
 <script src="js/reacoes2.js"></script>
+<script src="js/share.js"></script>
 <script src="js/configurar.js"></script>
+<script src="js/extras.js"></script>
 </body>
 </html>
