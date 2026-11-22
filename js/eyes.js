@@ -259,7 +259,7 @@
     this.nextMood = 0; this.lastMood = -1; this.morph = null; this.lidX = 0;
   }
   KarluEyes.FACES = FACES;
-  KarluEyes.REACTS = ALL;
+  KarluEyes.REACTS = ALL; KarluEyes.R = R;
 
   KarluEyes.prototype.resize = function (cssSize) {
     var px = Math.min(560, Math.max(200, Math.round(cssSize * this.dpr)));
