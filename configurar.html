@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Configurar o Karlu | Starlyn Infinite</title>
+<meta name="description" content="Conecte o Karlu por Bluetooth e configure tudo: rostos, cores, reações, olhar e ajustes. O que você muda aparece no display real.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://www.starlyninfinite.shop/configurar">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Starlyn Infinite">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Configurar o Karlu | Starlyn Infinite">
+<meta property="og:description" content="Conecte o Karlu por Bluetooth e configure rostos, cores, reações e mais.">
+<meta property="og:url" content="https://www.starlyninfinite.shop/configurar">
+<meta property="og:image" content="https://www.starlyninfinite.shop/assets/og-banner.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/configurar.css">
+</head>
+<body>
+
+<section class="page-hero cfg-hero">
+  <div class="wrap">
+    <span class="eyebrow rv">Configurar</span>
+    <h1 class="rv">Seu Karlu, <span class="grad">do seu jeito.</span></h1>
+    <p class="lead rv">Conecte por Bluetooth e controle o display de verdade. O que você muda aqui aparece no Karlu na hora.</p>
+  </div>
+</section>
+
+<main class="cfg wrap">
+  <aside class="cfg-prev">
+    <div class="cfg-stage">
+      <div class="disp" id="cfg-disp" data-mode="drag" data-face="0" data-react="happy" data-gap="600000,900000" data-float="0" data-shadow="0" style="--s:min(72vw,320px)"></div>
+      <span class="cfg-live" id="cfg-live"><i></i><b id="cfg-live-t">Pré-visualização</b></span>
+    </div>
+    <div class="cfg-now">
+      <div><small>Rosto</small><b id="now-face">Rosa + bege</b></div>
+      <div><small>Cor</small><b><span class="dot" id="now-dot"></span><span id="now-hex">do rosto</span></b></div>
+    </div>
+    <button class="btn btn-pink btn-block" id="btn-connect" type="button"><span data-i="bt"></span><span id="btn-connect-t">Conectar ao Karlu</span></button>
+    <p class="cfg-warn" id="cfg-warn" hidden></p>
+    <div class="cfg-quick">
+      <button type="button" id="q-blink"><span data-i="eye"></span>Piscar</button>
+      <button type="button" id="q-random"><span data-i="dice"></span>Surpresa</button>
+      <button type="button" id="q-charge"><span data-i="bolt"></span>Carregando</button>
+    </div>
+  </aside>
+
+  <section class="cfg-panel">
+    <div class="cfg-tabs" role="tablist">
+      <button class="on" data-tab="faces" type="button"><span data-i="smile"></span>Rostos</button>
+      <button data-tab="color" type="button"><span data-i="drop"></span>Cores</button>
+      <button data-tab="react" type="button"><span data-i="spark"></span>Reações</button>
+      <button data-tab="gaze" type="button"><span data-i="target"></span>Olhar</button>
+      <button data-tab="fine" type="button"><span data-i="sliders"></span>Ajustes</button>
+      <button data-tab="auto" type="button"><span data-i="cpu"></span>Modo</button>
+    </div>
+
+    <div class="cfg-pane on" id="pane-faces">
+      <div class="cfg-row"><h3>77 rostos</h3><label class="cfg-lock"><input type="checkbox" id="face-lock"> Travar neste rosto</label></div>
+      <input class="cfg-search" id="face-q" type="search" placeholder="Buscar rosto" aria-label="Buscar rosto">
+      <div class="face-grid" id="face-grid"></div>
+    </div>
+
+    <div class="cfg-pane" id="pane-color">
+      <h3>Cor dos olhos</h3>
+      <p class="cfg-hint">Escolha qualquer cor. Ela vale para os dois olhos e substitui a cor do rosto.</p>
+      <div class="wheel-box"><canvas id="wheel" width="300" height="300" aria-label="Roda de cores"></canvas><i id="wheel-pt"></i></div>
+      <label class="cfg-sl"><span>Brilho da cor</span><input type="range" id="c-v" min="10" max="100" value="100"><output id="c-vo">100%</output></label>
+      <div class="hex-row"><input id="c-hex" value="#FF42C4" maxlength="7" aria-label="Cor em hexadecimal"><button class="btn btn-pink" id="c-apply" type="button">Aplicar</button><button class="btn btn-ghost" id="c-off" type="button">Voltar à cor do rosto</button></div>
+      <div class="swatches-row" id="c-pre"></div>
+    </div>
+
+    <div class="cfg-pane" id="pane-react">
+      <div class="cfg-row"><h3>129 reações</h3></div>
+      <input class="cfg-search" id="rx-q" type="search" placeholder="Buscar reação" aria-label="Buscar reação">
+      <div class="rx-grid" id="rx-grid"></div>
+    </div>
+
+    <div class="cfg-pane" id="pane-gaze">
+      <h3>Para onde ele olha</h3>
+      <p class="cfg-hint">Arraste o ponto. Ao soltar, o Karlu volta ao olhar automático se você desligar o controle.</p>
+      <div class="pad" id="pad"><i id="pad-pt"></i></div>
+      <label class="cfg-sw"><input type="checkbox" id="g-on"><span></span>Controlar o olhar</label>
+    </div>
+
+    <div class="cfg-pane" id="pane-fine">
+      <div class="cfg-row"><h3>Ajustes finos</h3><label class="cfg-sw"><input type="checkbox" id="m-on"><span></span>Controle total</label></div>
+      <p class="cfg-hint">Ligue o controle total para o Karlu seguir estes valores.</p>
+      <div id="fine-list"></div>
+      <button class="btn btn-ghost" id="m-reset" type="button">Restaurar padrão</button>
+    </div>
+
+    <div class="cfg-pane" id="pane-auto">
+      <h3>Comportamento automático</h3>
+      <label class="cfg-sw big"><input type="checkbox" id="a-act" checked><span></span>Reações sozinhas</label>
+      <label class="cfg-sw big"><input type="checkbox" id="a-blink" checked><span></span>Piscar sozinho</label>
+      <label class="cfg-sw big"><input type="checkbox" id="a-gaze" checked><span></span>Olhar sozinho</label>
+      <label class="cfg-sw big"><input type="checkbox" id="a-mic" checked><span></span>Reagir ao microfone</label>
+    </div>
+  </section>
+</main>
+
+<div class="cfg-toast" id="cfg-toast" role="status" aria-live="polite"></div>
+
+<script src="js/products.js"></script>
+<script src="js/eyes.js"></script>
+<script src="js/main.js"></script>
+<script src="js/configurar.js"></script>
+</body>
+</html>
