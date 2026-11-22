@@ -11,7 +11,7 @@
       "headers": [{ "key": "Clear-Site-Data", "value": "\"cache\"" }]
     },
     {
-      "source": "/(sobre|karlu|produto|parceria)",
+      "source": "/(sobre|karlu|produto|parceria|configurar)",
       "headers": [{ "key": "Clear-Site-Data", "value": "\"cache\"" }]
     }
   ]
