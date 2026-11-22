@@ -42,13 +42,16 @@ function startShow(){
   function size(){fx.width=innerWidth;fx.height=innerHeight}size();addEventListener('resize',size);
   go(0);
   var blink=0,blinkT=0,nextBlink=2000,gx=0,gy=0,tgx=0,tgy=0,nextGaze=1000;
+  // olho no formato do firmware v13: oval inclinado (7 graus), pupila redonda grande e, de vez em quando, CUPULA (base reta inclinada)
+  var dome=0,domeT=0,nextDome=0;
   function eye(x,y,side,t,F,fxk){
-    var rx=82,ry=112;
-    ctx.save();ctx.translate(x,y);ctx.rotate(side*15*Math.PI/180);
-    var sy=1-blink*0.95;
-    ctx.fillStyle=rgb(F.e);ctx.beginPath();ctx.ellipse(0,0,rx,ry*sy,0,0,7);ctx.fill();
-    ctx.save();ctx.beginPath();ctx.ellipse(0,0,rx,ry*sy,0,0,7);ctx.clip();
-    ctx.fillStyle=rgb(F.p);ctx.beginPath();ctx.ellipse(side*-18+gx,22+gy,32,41*sy,side*-8*Math.PI/180,0,7);ctx.fill();
+    var rx=84,ry=112,sy=1-blink*0.95,R=ry*sy,cb=0.2*dome,D=Math.PI/180;
+    var yy=y+ry*3*cb*blink*0.96; // ao piscar a base reta fica parada e a palpebra desce
+    ctx.save();ctx.translate(x,yy);ctx.rotate(side*7*D);
+    if(cb>0.002){var lb=(-side*8*(side>0?1.3:0.6)-side*7)*D;ctx.rotate(lb);ctx.beginPath();ctx.rect(-400,R-2*R*cb-800,800,800);ctx.clip();ctx.rotate(-lb);}
+    ctx.fillStyle=rgb(F.e);ctx.beginPath();ctx.ellipse(0,0,rx,R,0,0,7);ctx.fill();
+    ctx.save();ctx.beginPath();ctx.ellipse(0,0,rx,R,0,0,7);ctx.clip();
+    ctx.fillStyle=rgb(F.p);ctx.beginPath();ctx.ellipse(side*-24+gx,18*sy+gy*sy,32.5,41.7*sy,0,0,7);ctx.fill();
     if(fxk===2){ctx.fillStyle='rgba(205,245,255,.4)';ctx.beginPath();ctx.ellipse(0,ry*.55,rx*.6,6+2*Math.sin(t*3),0,0,7);ctx.fill();}
     ctx.restore();ctx.restore();
   }
@@ -61,6 +64,7 @@ function startShow(){
     if(now>nextBlink){blinkT=now;nextBlink=now+2300+Math.random()*2000}
     if(now>nextGaze){tgx=(Math.random()-.5)*20;tgy=(Math.random()-.5)*22;nextGaze=now+900+Math.random()*2200}
     gx+=(tgx-gx)*.2;gy+=(tgy-gy)*.2;
+    if(now>nextDome){domeT=Math.random()<0.45?0:1;nextDome=now+5000+Math.random()*9000;}dome+=(domeT-dome)*0.03;
     ctx.fillStyle=rgb(F.bg);ctx.fillRect(0,0,480,480);
     var bt=now-blinkT;var save=blink;blink=(bt>0&&bt<180)?Math.sin(bt/180*Math.PI):0;
     eye(240-96,218,-1,t,F,fxk);eye(240+96,218,1,t,F,fxk);
