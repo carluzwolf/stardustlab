@@ -83,5 +83,5 @@ function apply(r,t,d,e,sd,T,O,H,I){
   if(r.m2)motion(r.m2[0],r.m2[1],r.m2[2],t,d,e,sd,T,O);
 }
 Object.keys(RX).forEach(function(id){var r=RX[id];R['rx'+id]={d:r.d,f:function(t,d,e,sd,T,O,H,I){apply(r,t,d,e,sd,T,O,H,I)},exact:!r.cu};});
-E.RXIDS=Object.keys(RX).map(Number);
+E.rxMotion=motion;E.rxTint=tint;E.RXIDS=Object.keys(RX).map(Number);
 })();
