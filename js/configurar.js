@@ -140,7 +140,7 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
   var MAP = [[/cora|amor|paix/i, 'love'], [/estrela|brilh|dsl|deslum/i, 'star'], [/brav|raiva|furios|veia/i, 'angry'], [/triste|chor|solu/i, 'sad'], [/sono|dorm|zzz|noite|boc/i, 'sleepy'], [/ton|espiral|hipnos/i, 'dizzy'], [/susto|choque|assust|medo|boom/i, 'surprise'], [/pisc/i, 'wink'], [/curios|ha\?|ideia/i, 'curious'], [/pens|maquin/i, 'think'], [/risa|feliz|sorri|festa|parab|dan|cantar|bom dia/i, 'happy'], [/cambal|girando|rolando/i, 'spin'], [/vesg/i, 'cross'], [/resmung|determin/i, 'mumble'], [/olhando|escane|radar|alvo/i, 'look'], [/gato|legal|hacker/i, 'cool']];
   var BASE = { 1: 'grin', 2: 'smirk', 3: 'think', 4: 'yawn', 5: 'happy', 6: 'sad', 7: 'surprise', 8: 'spin', 9: 'no', 10: 'yes', 11: 'curious', 12: 'wink', 13: 'cross', 14: 'mumble', 15: 'sleepy' };
   function preview(id) {
-    var n = REACT_NAMES[id - 1] || '', k = BASE[id]; if (id === 16) { eyes.face = -1; eyes.setFace((cur.face + 1) % FACES.length); return; }
+    var n = REACT_NAMES[id - 1] || '', k = BASE[id]; if (KarluEyes.R['rx' + id] && KarluEyes.R['rx' + id].exact) { eyes.trigger('rx' + id); return; } if (id === 16) { eyes.face = -1; eyes.setFace((cur.face + 1) % FACES.length); return; }
     if (!k) for (var i = 0; i < MAP.length; i++) if (MAP[i][0].test(n)) { k = MAP[i][1]; break; }
     eyes.trigger(k || 'cute');
   }
