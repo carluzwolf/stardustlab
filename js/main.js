@@ -32,7 +32,7 @@
   var hdr = document.createElement('header');
   hdr.className = 'hdr';
   hdr.innerHTML = '<div class="wrap"><a class="logo" href="index.html" aria-label="Starlyn Infinite"><img src="assets/logo-color.png" alt="Starlyn Infinite" width="63" height="40"></a>' +
-    '<nav class="nav">' + nav('index.html', 'Início', 'index') + nav('sobre.html', 'Starlyn', 'sobre') + nav('karlu.html', 'Projeto Karlu', 'karlu') + nav('galeria.html', 'Galeria', 'galeria') + nav('configurar.html', 'Configurar', 'configurar') +
+    '<nav class="nav">' + nav('index.html', 'Início', 'index') + nav('sobre.html', 'Starlyn', 'sobre') + nav('karlu.html', 'Projeto Karlu', 'karlu') + nav('galeria.html', 'Galeria', 'galeria') + nav('configurar.html', 'Configurar', 'configurar') + nav('criar.html', 'Criar rosto', 'criar') +
     '<a href="index.html#modelos" class="cta">Ver modelos</a></nav><button class="burger" aria-label="Abrir menu"><span></span></button></div>';
   document.body.insertBefore(hdr, document.body.firstChild);
   $('.burger', hdr).addEventListener('click', function () { document.body.classList.toggle('menu-open'); });
@@ -46,7 +46,7 @@
     (C.whatsapp ? '<li><a href="https://wa.me/' + C.whatsapp + '" target="_blank" rel="noopener">WhatsApp</a></li>' : '') +
     (C.email ? '<li><a href="mailto:' + C.email + '">' + C.email + '</a></li>' : '');
   ftr.innerHTML = '<div class="wrap"><div class="row"><div><img src="assets/logo-bw.png" alt="Starlyn Infinite" width="88" height="56"><p>Tecnologia brasileira, criada em Salvador, Bahia. O Karlu é o primeiro projeto da Starlyn Infinite.</p></div>' +
-    '<div><h4>Navegar</h4><ul><li><a href="index.html">Início</a></li><li><a href="sobre.html">Sobre a Starlyn Infinite</a></li><li><a href="karlu.html">Projeto Karlu</a></li><li><a href="galeria.html">Galeria</a></li><li><a href="configurar.html">Configurar o Karlu</a></li></ul></div>' +
+    '<div><h4>Navegar</h4><ul><li><a href="index.html">Início</a></li><li><a href="sobre.html">Sobre a Starlyn Infinite</a></li><li><a href="karlu.html">Projeto Karlu</a></li><li><a href="galeria.html">Galeria</a></li><li><a href="configurar.html">Configurar o Karlu</a></li><li><a href="criar.html">Criar rosto</a></li><li><a href="ajuda.html">Ajuda Bluetooth</a></li></ul></div>' +
     '<div><h4>Modelos</h4><ul>' + P.map(function (p) { return '<li><a href="produto.html?v=' + p.id + '">' + p.name + '</a></li>'; }).join('') + '</ul></div>' +
     '<div><h4>Contato</h4><ul>' + contact + '</ul></div></div>' +
     '<div class="copy"><span>© ' + new Date().getFullYear() + ' Starlyn Infinite. Todos os direitos reservados.</span><span class="legal-links"><a href="terms.html">Termos de Serviço</a> · <a href="privacy.html">Política de Privacidade</a></span><span>Feita no Brasil, em Salvador (BA).</span></div></div>';
