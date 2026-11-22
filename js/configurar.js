@@ -14,6 +14,7 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
     drop: '<path d="M12 3s6 6.4 6 10.5a6 6 0 01-12 0C6 9.400 12 3 12 3z"/>', spark: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/>',
     target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/>',
     sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+    star: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>', save: '<path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/>', cam: '<path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/>', vid: '<rect x="2" y="6" width="14" height="12" rx="3"/><path d="M16 10l6-3v10l-6-3z"/>',
     cpu: '<rect x="6" y="6" width="12" height="12" rx="2"/><rect x="10" y="10" width="4" height="4"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>'
   };
   $$('[data-i]').forEach(function (n) { n.innerHTML = '<svg ' + S + '>' + ICONS[n.dataset.i] + '</svg>'; });
@@ -26,7 +27,7 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
   var dev = null, rxC = null, queue = Promise.resolve(), conn = false, timers = {};
   function setConn(on, label) {
     conn = on; $('#cfg-live').classList.toggle('on', on); $('#cfg-live-t').textContent = on ? 'Karlu conectado' : 'Pré-visualização';
-    $('#btn-connect-t').textContent = on ? 'Desconectar' : (label || 'Conectar ao Karlu');
+    $('#btn-connect-t').textContent = on ? 'Desconectar' : (label || idleLabel());
   }
   function send(bytes) {
     if (!conn || !rxC) { if (Date.now() - lastHint > 5000) { lastHint = Date.now(); toast('Só na pré-visualização. Conecte ao Karlu para enviar.'); } return; }
@@ -43,25 +44,47 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
   function onTx(e) {
     var v = e.target.value; if (!v || v.byteLength < 12) return;
     if (v.getUint8(0) === 0x10 && v.byteLength >= 19) {
-      var id = v.getUint8(17); if (id && id !== lastAct) { lastAct = id; preview(id); $('#cfg-live-t').textContent = 'Karlu: ' + (REACT_NAMES[id - 1] || 'reação'); setTimeout(function () { if (conn) $('#cfg-live-t').textContent = 'Karlu conectado'; }, 2500); } if (!id) lastAct = 0;
+      var id = v.getUint8(17);
+      $$('.rx-grid .live').forEach(function (b) { b.classList.remove('live'); });
+      if (id) $$('[data-r="' + id + '"]').forEach(function (b) { b.classList.add('live'); });
+      if (id && id !== lastAct) { lastAct = id; preview(id); $('#cfg-live-t').textContent = 'Karlu: ' + (REACT_NAMES[id - 1] || 'reação'); setTimeout(function () { if (conn) $('#cfg-live-t').textContent = 'Karlu conectado'; }, 2500); } if (!id) lastAct = 0;
     }
   }
-  var lastAct = 0;
+  var lastAct = 0, known = null;
+  function idleLabel() { return known ? 'Reconectar ao Karlu' : 'Conectar ao Karlu'; }
+  async function attach(d) {
+    dev = d; known = d;
+    if (!d.__k) { d.__k = 1; d.addEventListener('gattserverdisconnected', function () { setConn(false, idleLabel()); rxC = null; toast('Karlu desconectado'); }); }
+    var srv = await d.gatt.connect(), svc = await srv.getPrimaryService(SVC);
+    rxC = await svc.getCharacteristic(RX);
+    try { var tx = await svc.getCharacteristic(TX); await tx.startNotifications(); tx.addEventListener('characteristicvaluechanged', onTx); } catch (x) {}
+    try { localStorage.setItem('karlu.dev', d.id); } catch (x) {}
+    setConn(true); toast('Conectado! O Karlu vai te dar um oi.');
+    syncAll();
+  }
   async function connect() {
     if (!navigator.bluetooth || !window.isSecureContext) return unsupported();
     $('#cfg-warn').hidden = true;
+    if (known) { try { setConn(false, 'Reconectando...'); await attach(known); return; } catch (err) { known = null; } }
     try {
       setConn(false, 'Procurando...');
-      dev = await navigator.bluetooth.requestDevice({ filters: [{ services: [SVC] }, { name: 'Starboy' }], optionalServices: [SVC] });
-      dev.addEventListener('gattserverdisconnected', function () { setConn(false); rxC = null; toast('Karlu desconectado'); });
-      var srv = await dev.gatt.connect(), svc = await srv.getPrimaryService(SVC);
-      rxC = await svc.getCharacteristic(RX);
-      try { var tx = await svc.getCharacteristic(TX); await tx.startNotifications(); tx.addEventListener('characteristicvaluechanged', onTx); } catch (x) {}
-      setConn(true); toast('Conectado! O Karlu vai te dar um oi.');
-      syncAll();
-    } catch (err) { setConn(false); if (err && err.name !== 'NotFoundError') toast('Não consegui conectar. Tente de novo.'); }
+      var d = await navigator.bluetooth.requestDevice({ filters: [{ services: [SVC] }, { name: 'Starboy' }], optionalServices: [SVC] });
+      await attach(d);
+    } catch (err) { setConn(false, idleLabel()); if (err && err.name !== 'NotFoundError') toast('Não consegui conectar. Tente de novo.'); }
   }
   $('#btn-connect').addEventListener('click', function () { if (conn && dev) { dev.gatt.disconnect(); } else connect(); });
+  /* reconexao automatica: lembra do ultimo Karlu (Chrome com permissao salva) */
+  if (navigator.bluetooth && navigator.bluetooth.getDevices && window.isSecureContext) {
+    navigator.bluetooth.getDevices().then(function (list) {
+      var id = ''; try { id = localStorage.getItem('karlu.dev') || ''; } catch (x) {}
+      var d = list.filter(function (x) { return x.id === id; })[0] || list.filter(function (x) { return x.name === 'Starboy'; })[0];
+      if (!d) return; known = d; if (!conn) setConn(false, idleLabel());
+      if (d.watchAdvertisements) {
+        d.addEventListener('advertisementreceived', function f() { d.removeEventListener('advertisementreceived', f); if (!conn) attach(d).catch(function () {}); });
+        d.watchAdvertisements().catch(function () {});
+      }
+    }).catch(function () {});
+  }
 
   /* ---------- estado ---------- */
   var cur = { face: 0, hold: false, rgb: null, lock: false, charge: false };
@@ -70,15 +93,15 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
   /* ---------- rostos ---------- */
   var grid = $('#face-grid');
   function rgb(a, i) { return 'rgb(' + a[i] + ',' + a[i + 1] + ',' + a[i + 2] + ')'; }
-  grid.innerHTML = FACES.map(function (f, i) { return '<button type="button" data-f="' + i + '"><i style="--a:' + rgb(f, 0) + ';--b:' + rgb(f, 6) + '"></i><span>' + (FACE_NAMES[i] || 'Rosto ' + i) + '</span></button>'; }).join('');
-  function markFace() { $$('button', grid).forEach(function (b) { b.classList.toggle('on', +b.dataset.f === cur.face); }); $('#now-face').textContent = FACE_NAMES[cur.face] || 'Rosto ' + cur.face; }
+  function faceBtn(i) { var f = FACES[i]; return '<button type="button" data-f="' + i + '"><span class="star" data-k="f" data-id="' + i + '" title="Favoritar">☆</span><i style="--a:' + rgb(f, 0) + ';--b:' + rgb(f, 6) + '"></i><span>' + (FACE_NAMES[i] || 'Rosto ' + i) + '</span></button>'; }
+  grid.innerHTML = FACES.map(function (f, i) { return faceBtn(i); }).join('');
+  function markFace() { $$('[data-f]').forEach(function (b) { b.classList.toggle('on', +b.dataset.f === cur.face); }); $('#now-face').textContent = FACE_NAMES[cur.face] || 'Rosto ' + cur.face; }
   function pickFace(i) {
     cur.face = i; if (cur.hold) releaseColor(true);
     eyes.setFace(i); eyes.trigger('cute'); markFace();
     var c = FACES[i]; $('#now-dot').style.background = 'linear-gradient(90deg,' + rgb(c, 0) + ' 50%,' + rgb(c, 6) + ' 50%)'; $('#now-hex').textContent = 'do rosto';
     send([0x0A, i, $('#face-lock').checked ? 1 : 0]);
   }
-  grid.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) pickFace(+b.dataset.f); });
   $('#face-q').addEventListener('input', function (e) { var q = e.target.value.toLowerCase(); $$('button', grid).forEach(function (b) { b.hidden = b.textContent.toLowerCase().indexOf(q) < 0; }); });
   markFace();
 
@@ -139,19 +162,22 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
   /* ---------- reações ---------- */
   var MAP = [[/cora|amor|paix/i, 'love'], [/estrela|brilh|dsl|deslum/i, 'star'], [/brav|raiva|furios|veia/i, 'angry'], [/triste|chor|solu/i, 'sad'], [/sono|dorm|zzz|noite|boc/i, 'sleepy'], [/ton|espiral|hipnos/i, 'dizzy'], [/susto|choque|assust|medo|boom/i, 'surprise'], [/pisc/i, 'wink'], [/curios|ha\?|ideia/i, 'curious'], [/pens|maquin/i, 'think'], [/risa|feliz|sorri|festa|parab|dan|cantar|bom dia/i, 'happy'], [/cambal|girando|rolando/i, 'spin'], [/vesg/i, 'cross'], [/resmung|determin/i, 'mumble'], [/olhando|escane|radar|alvo/i, 'look'], [/gato|legal|hacker/i, 'cool']];
   var BASE = { 1: 'grin', 2: 'smirk', 3: 'think', 4: 'yawn', 5: 'happy', 6: 'sad', 7: 'surprise', 8: 'spin', 9: 'no', 10: 'yes', 11: 'curious', 12: 'wink', 13: 'cross', 14: 'mumble', 15: 'sleepy' };
+  function mapName(n) { for (var i = 0; i < MAP.length; i++) if (MAP[i][0].test(n)) return MAP[i][1]; return null; }
   function preview(id) {
-    var n = REACT_NAMES[id - 1] || '', k = BASE[id]; if (KarluEyes.R['rx' + id] && KarluEyes.R['rx' + id].exact) { eyes.trigger('rx' + id); return; } if (id === 16) { eyes.face = -1; eyes.setFace((cur.face + 1) % FACES.length); return; }
+    var n = REACT_NAMES[id - 1] || '', k = BASE[id]; snd(k || mapName(n) || 'cute'); if (KarluEyes.R['rx' + id] && KarluEyes.R['rx' + id].exact) { eyes.trigger('rx' + id); return; } if (id === 16) { eyes.face = -1; eyes.setFace((cur.face + 1) % FACES.length); return; }
     if (!k) for (var i = 0; i < MAP.length; i++) if (MAP[i][0].test(n)) { k = MAP[i][1]; break; }
     eyes.trigger(k || 'cute');
   }
   var rg = $('#rx-grid');
-  rg.innerHTML = REACT_NAMES.map(function (n, i) { return '<button type="button" data-r="' + (i + 1) + '">' + n + '</button>'; }).join('');
-  rg.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; var id = +b.dataset.r; preview(id); send([0x01, id]); b.classList.add('fire'); setTimeout(function () { b.classList.remove('fire'); }, 600); });
+  function rxBtn(id) { return '<button type="button" data-r="' + id + '">' + REACT_NAMES[id - 1] + '<span class="star" data-k="r" data-id="' + id + '" title="Favoritar">☆</span></button>'; }
+  rg.innerHTML = REACT_NAMES.map(function (n, i) { return rxBtn(i + 1); }).join('');
+  function fireReact(id, b) { lastReact = id; preview(id); send([0x01, id]); if (b) { b.classList.add('fire'); setTimeout(function () { b.classList.remove('fire'); }, 600); } }
+  var lastReact = 0;
   $('#rx-q').addEventListener('input', function (e) { var q = e.target.value.toLowerCase(); $$('button', rg).forEach(function (b) { b.hidden = b.textContent.toLowerCase().indexOf(q) < 0; }); });
 
   /* ---------- atalhos ---------- */
   $('#q-blink').addEventListener('click', function () { eyes.startBlink(performance.now()); send([0x09]); });
-  $('#q-random').addEventListener('click', function () { var id = 1 + Math.floor(Math.random() * 129); preview(id); send([0x01, id]); toast(REACT_NAMES[id - 1]); });
+  $('#q-random').addEventListener('click', function () { var id = 1 + Math.floor(Math.random() * 129); fireReact(id); toast(REACT_NAMES[id - 1]); });
   $('#q-charge').addEventListener('click', function (e) { cur.charge = !cur.charge; e.currentTarget.classList.toggle('on', cur.charge); send([0x0B, cur.charge ? 1 : 0]); if (cur.charge) eyes.trigger('happy'); });
 
   /* ---------- olhar ---------- */
@@ -178,7 +204,90 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
 
   /* ---------- modo automatico ---------- */
   function autoBits() { return ($('#a-act').checked ? 1 : 0) | ($('#a-blink').checked ? 2 : 0) | ($('#a-gaze').checked ? 4 : 0) | ($('#a-mic').checked ? 8 : 0); }
-  $$('#pane-auto input').forEach(function (n) { n.addEventListener('change', function () { send([0x02, autoBits()]); }); });
+  $$('#pane-auto input:not(#a-snd)').forEach(function (n) { n.addEventListener('change', function () { send([0x02, autoBits()]); }); });
+
+
+  /* ---------- favoritos ---------- */
+  var FAV = { f: [], r: [] };
+  try { var sv = JSON.parse(localStorage.getItem('karlu.fav') || 'null'); if (sv && sv.f && sv.r) FAV = sv; } catch (x) {}
+  function saveFav() { try { localStorage.setItem('karlu.fav', JSON.stringify(FAV)); } catch (x) {} }
+  function paintStars() { $$('.star').forEach(function (st) { var on = FAV[st.dataset.k].indexOf(+st.dataset.id) >= 0; st.classList.toggle('on', on); st.textContent = on ? '★' : '☆'; }); }
+  function renderFav() {
+    $('#fav-faces').innerHTML = FAV.f.length ? FAV.f.map(faceBtn).join('') : '<p class="cfg-empty">Toque na ☆ de um rosto para ele aparecer aqui.</p>';
+    $('#fav-rx').innerHTML = FAV.r.length ? FAV.r.map(rxBtn).join('') : '<p class="cfg-empty">Toque na ☆ de uma reação para ela aparecer aqui.</p>';
+    paintStars(); markFace();
+  }
+  function toggleFav(st) {
+    var a = FAV[st.dataset.k], id = +st.dataset.id, i = a.indexOf(id);
+    if (i >= 0) a.splice(i, 1); else a.push(id);
+    saveFav(); renderFav();
+  }
+  $('.cfg-panel').addEventListener('click', function (e) {
+    var st = e.target.closest('.star'); if (st) { e.preventDefault(); e.stopPropagation(); toggleFav(st); return; }
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.f !== undefined) pickFace(+b.dataset.f); else if (b.dataset.r !== undefined) fireReact(+b.dataset.r, b);
+  });
+  renderFav();
+
+  /* ---------- presets ---------- */
+  var PS = [];
+  try { PS = JSON.parse(localStorage.getItem('karlu.presets') || '[]') || []; } catch (x) {}
+  function savePS() { try { localStorage.setItem('karlu.presets', JSON.stringify(PS)); } catch (x) {} }
+  function renderPS() {
+    $('#ps-list').innerHTML = PS.length ? PS.map(function (p, i) {
+      var f = FACES[p.face] || FACES[0], c = p.rgb ? ['rgb(' + p.rgb.join(',') + ')', 'rgb(' + p.rgb.join(',') + ')'] : [rgb(f, 0), rgb(f, 6)];
+      return '<div class="ps-item"><span class="dots"><i style="background:' + c[0] + '"></i><i style="background:' + c[1] + '"></i></span><b>' + p.n.replace(/</g, '&lt;') + '<small>' + (FACE_NAMES[p.face] || 'Rosto ' + p.face) + (p.fine ? ' · ajustes' : '') + '</small></b><button class="go" data-go="' + i + '" type="button">Aplicar</button><button class="del" data-del="' + i + '" type="button" aria-label="Apagar">✕</button></div>';
+    }).join('') : '<p class="cfg-empty">Nenhum preset ainda. Monte o rosto, a cor e os ajustes do jeito que gosta, dê um nome e salve.</p>';
+  }
+  function savePreset() {
+    var n = $('#ps-name').value.trim() || ('Preset ' + (PS.length + 1));
+    PS.push({ n: n.slice(0, 30), face: cur.face, lock: $('#face-lock').checked, rgb: cur.hold ? cur.rgb : null, fine: $('#m-on').checked ? fv.slice() : null, auto: autoBits() });
+    savePS(); renderPS(); $('#ps-name').value = ''; toast('Preset salvo');
+  }
+  function applyPreset(p) {
+    $('#face-lock').checked = !!p.lock; pickFace(p.face);
+    if (p.rgb) { hsv = rgb2hsv(p.rgb[0], p.rgb[1], p.rgb[2]); $('#c-v').value = Math.round(hsv.v * 100); $('#c-vo').textContent = Math.round(hsv.v * 100) + '%'; applyColor(p.rgb, true); }
+    var a = p.auto == null ? 15 : p.auto; $('#a-act').checked = !!(a & 1); $('#a-blink').checked = !!(a & 2); $('#a-gaze').checked = !!(a & 4); $('#a-mic').checked = !!(a & 8); send([0x02, a]);
+    if (p.fine) { p.fine.forEach(function (v, i) { fv[i] = v; var n = $$('#fine-list input')[i]; n.value = v; n.nextElementSibling.textContent = v; }); $('#m-on').checked = true; send([0x06, 1]); pushFine(); }
+    else if ($('#m-on').checked) { $('#m-on').checked = false; send([0x06, 0]); }
+    toast('Preset "' + p.n + '" aplicado');
+  }
+  $('#ps-save').addEventListener('click', savePreset);
+  $('#ps-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') savePreset(); });
+  $('#ps-list').addEventListener('click', function (e) {
+    var g = e.target.closest('[data-go]'), d = e.target.closest('[data-del]');
+    if (g) applyPreset(PS[+g.dataset.go]); else if (d) { PS.splice(+d.dataset.del, 1); savePS(); renderPS(); }
+  });
+  renderPS();
+
+  /* ---------- sons (pre-visualizacao) ---------- */
+  var AC = null, SND = { happy: [[660, .09], [880, .12]], grin: [[660, .09], [880, .12]], wink: [[880, .06], [1175, .1]], love: [[523, .12], [659, .12], [784, .18]], star: [[784, .08], [988, .08], [1319, .16]], sad: [[440, .16], [330, .26]], sleepy: [[330, .22], [262, .34]], yawn: [[392, .2], [294, .3]], angry: [[110, .22, 'sawtooth'], [98, .26, 'sawtooth']], surprise: [[600, .05], [1200, .12]], dizzy: [[500, .08], [650, .08], [500, .08], [650, .08]], curious: [[500, .08], [700, .14]], think: [[400, .1], [400, .1], [480, .14]], spin: [[400, .07], [500, .07], [600, .07], [800, .12]], cool: [[300, .12, 'square'], [400, .12, 'square']], cute: [[900, .06], [1100, .06], [1400, .1]] };
+  try { $('#a-snd').checked = localStorage.getItem('karlu.snd') === '1'; } catch (x) {}
+  $('#a-snd').addEventListener('change', function (e) { try { localStorage.setItem('karlu.snd', e.target.checked ? '1' : '0'); } catch (x) {} if (e.target.checked) snd('happy'); });
+  function snd(k) {
+    if (!$('#a-snd').checked) return;
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume();
+      var seq = SND[k] || [[700, .1]], t = AC.currentTime + .01;
+      seq.forEach(function (n) {
+        var o = AC.createOscillator(), g = AC.createGain(); o.type = n[2] || 'sine'; o.frequency.value = n[0];
+        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.12, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + n[1]);
+        o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + n[1] + .02); t += n[1] * .85;
+      });
+    } catch (x) {}
+  }
+
+  /* ---------- compartilhar ---------- */
+  var recording = false;
+  $$('.share-photo').forEach(function (b) { b.addEventListener('click', function () { var cv = $('#cfg-disp canvas'); if (cv && window.KarluShare) KarluShare.photo(cv, function (r) { if (r === 'saved') toast('Foto salva'); }); }); });
+  $$('.share-clip').forEach(function (b) { b.addEventListener('click', function () {
+    var cv = $('#cfg-disp canvas'); if (!cv || !window.KarluShare || recording) return;
+    recording = true;
+    KarluShare.clip(cv, 4500, function () { $$('.share-clip').forEach(function (x) { x.classList.add('rec'); }); toast('Gravando 4 segundos...'); preview(lastReact || 5); }, function (r) {
+      recording = false; $$('.share-clip').forEach(function (x) { x.classList.remove('rec'); });
+      if (r === 'unsupported') toast('Seu navegador não grava vídeo. Use a foto.'); else if (r === 'saved') toast('Clipe salvo');
+    });
+  }); });
 
   /* ---------- abas ---------- */
   $$('.cfg-tabs button').forEach(function (b) { b.addEventListener('click', function () {
