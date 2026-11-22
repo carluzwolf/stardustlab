@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ajuda com o Bluetooth do Karlu | Starlyn Infinite</title>
+<meta name="description" content="Não consegue conectar o Karlu? Teste a compatibilidade do seu aparelho e siga o passo a passo para resolver os problemas mais comuns de Bluetooth.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://www.starlyninfinite.shop/ajuda">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Starlyn Infinite">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Ajuda com o Bluetooth do Karlu | Starlyn Infinite">
+<meta property="og:description" content="Teste a compatibilidade do seu aparelho e resolva problemas de conexão com o Karlu.">
+<meta property="og:url" content="https://www.starlyninfinite.shop/ajuda">
+<meta property="og:image" content="https://www.starlyninfinite.shop/assets/og-banner.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/extras.css">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script>try{var t=localStorage.getItem('karlu.theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow rv">Ajuda</span>
+    <h1 class="rv">Conectar o Karlu, <span class="grad">sem dor de cabeça.</span></h1>
+    <p class="lead rv" style="margin:0 auto">Veja se o seu aparelho é compatível e siga o passo a passo. Se ainda assim não der certo, é só falar com a gente.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center"><h2>Teste do seu aparelho</h2><p class="lead" style="margin:10px auto 0">Verificamos agora, neste navegador.</p></div>
+    <div class="hp-check" id="hp-check" style="margin-top:28px"></div>
+
+    <div class="sec-head" style="text-align:center"><h2>Passo a passo</h2></div>
+    <ol class="hp-steps" style="margin-top:28px">
+      <li><b>Use o navegador certo</b><span>No Android, Chrome, Samsung Internet ou Edge. No computador, Chrome ou Edge. iPhone e iPad não têm Bluetooth Web, então não funcionam.</span></li>
+      <li><b>Abra o site em https</b><span>O navegador só libera o Bluetooth em páginas seguras. O endereço precisa começar com https://.</span></li>
+      <li><b>Ligue o Bluetooth e o Karlu</b><span>No celular, ative também a localização (o Android exige para buscar aparelhos). Deixe o Karlu ligado e perto, a menos de 2 metros.</span></li>
+      <li><b>Feche outros apps que usam o Karlu</b><span>O Karlu aceita uma conexão por vez. Se ele estiver conectado em outro aparelho ou aba, desconecte antes.</span></li>
+      <li><b>Toque em Conectar e escolha o Karlu</b><span>Na janela que abrir, escolha o aparelho chamado Starboy. Quando conectar, o indicador fica verde e o Karlu dá um oi.</span></li>
+      <li><b>Ainda nada? Reinicie</b><span>Desligue e ligue o Karlu, feche e abra o navegador e tente de novo. Em último caso, remova o Karlu da lista de Bluetooth do aparelho e pareie outra vez.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" style="background:var(--bg-2)">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center"><h2>Perguntas comuns</h2></div>
+    <div class="hp-faq" style="margin-top:28px">
+      <details><summary>O Karlu não aparece na lista</summary><p>Confira se ele está ligado, perto e sem outra conexão ativa. No Android, a localização precisa estar ligada. Se continuar sem aparecer, reinicie o Karlu.</p></details>
+      <details><summary>Conecta e cai logo depois</summary><p>Geralmente é distância, bateria baixa ou interferência. Chegue mais perto, carregue o Karlu e evite deixar muitos aparelhos Bluetooth por perto.</p></details>
+      <details><summary>Funciona no iPhone?</summary><p>Ainda não. O Safari e os navegadores do iPhone não liberam o Bluetooth Web. Use um celular Android ou um computador com Chrome ou Edge.</p></details>
+      <details><summary>Posso usar a pré-visualização sem o Karlu?</summary><p>Pode. Todas as telas funcionam como simulação. Quando você conecta, o que muda aparece também no display real.</p></details>
+      <details><summary>Perdi meus presets e favoritos</summary><p>Eles ficam guardados no navegador. Se você limpar os dados do site ou trocar de navegador, precisa criar de novo.</p></details>
+    </div>
+    <p style="text-align:center;margin-top:34px"><a class="btn btn-pink" href="configurar.html">Ir para o configurador</a></p>
+  </div>
+</section>
+
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+<script>
+(function () {
+  var box = document.getElementById('hp-check'), ua = navigator.userAgent || '';
+  var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var rows = [
+    [!ios, 'Sistema', ios ? 'iPhone e iPad não são compatíveis com o Bluetooth Web.' : 'Sem problema aqui.'],
+    [!!window.isSecureContext, 'Página segura (https)', window.isSecureContext ? 'Tudo certo.' : 'Abra o site pelo endereço https://.'],
+    [!!navigator.bluetooth, 'Navegador com Bluetooth Web', navigator.bluetooth ? 'Este navegador é compatível.' : 'Use Chrome, Edge ou Samsung Internet.']
+  ];
+  function draw() { box.innerHTML = rows.map(function (r) { return '<div class="' + (r[0] === null ? '' : r[0] ? 'ok' : 'no') + '"><i>' + (r[0] === null ? '…' : r[0] ? '✓' : '✕') + '</i><span>' + r[1] + '<small>' + r[2] + '</small></span></div>'; }).join(''); }
+  if (navigator.bluetooth && navigator.bluetooth.getAvailability) {
+    rows.push([null, 'Bluetooth do aparelho', 'Verificando...']); draw();
+    navigator.bluetooth.getAvailability().then(function (a) { rows[3] = [a, 'Bluetooth do aparelho', a ? 'Ligado e disponível.' : 'Está desligado ou indisponível. Ligue o Bluetooth.']; draw(); }, function () { rows.pop(); draw(); });
+  } else draw();
+})();
+</script>
+<script src="js/extras.js"></script>
+</body>
+</html>
