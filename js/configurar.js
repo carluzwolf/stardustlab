@@ -187,3 +187,4 @@ var REACT_NAMES=["Sorrisão", "Sorriso de canto", "Pensando", "Bocejo", "Risada"
   }); });
   if (!navigator.bluetooth) unsupported();
 })();
+ (n) { n.addEventListener('change', function () { send([0x02, autoBits()
