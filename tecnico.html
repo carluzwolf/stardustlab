@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ficha técnica do Karlu | Starlyn Infinite</title>
+<meta name="description" content="Hardware, ligação, Bluetooth (UUIDs e comandos) e comportamento do firmware Starboy v14 do Karlu.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://www.starlyninfinite.shop/tecnico">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Starlyn Infinite">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Ficha técnica do Karlu | Starlyn Infinite">
+<meta property="og:description" content="Hardware, ligação, Bluetooth (UUIDs e comandos) e comportamento do firmware Starboy v14 do Karlu.">
+<meta property="og:url" content="https://www.starlyninfinite.shop/tecnico">
+<meta property="og:image" content="https://www.starlyninfinite.shop/assets/og-banner.jpg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/configurar.css">
+<link rel="stylesheet" href="css/novas.css">
+<link rel="stylesheet" href="css/extras.css">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script>try{var t=localStorage.getItem('karlu.theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body data-page="tecnico">
+<section class="page-hero cfg-hero"><div class="wrap"><span class="eyebrow rv">Ficha técnica</span><h1 class="rv">Por dentro <span class="grad">do Karlu.</span></h1><p class="lead rv">ESP32-C3, display redondo, microfone e um firmware que desenha tudo por código.</p></div></section>
+<main class="wrap nv-tec"><section class="ex-card"><h3>Hardware</h3><ul><li>ESP32-C3 SuperMini (Bluetooth LE)</li><li>Display redondo GC9A01 de 1,28" (240×240)</li><li>Microfone MAX4466 (voz, susto e duas palmas = cambalhota)</li><li>Sem bibliotecas extras: só SPI e BLE do ESP32</li></ul><h3>Ligação</h3><div class="nv-scroll"><table><tr><th>Pino</th><th>Display / mic</th></tr><tr><td>GPIO4</td><td>SCL</td></tr><tr><td>GPIO6</td><td>SDA</td></tr><tr><td>GPIO7</td><td>CS</td></tr><tr><td>GPIO1</td><td>DC</td></tr><tr><td>GPIO0</td><td>RST</td></tr><tr><td>GPIO3</td><td>OUT do MAX4466</td></tr></table></div><p class="cfg-note">Na IDE: ESP32C3 Dev Module, USB CDC On Boot ativado. Se der "sketch too big": Partition Scheme Huge APP.</p></section><section class="ex-card"><h3>Bluetooth</h3><p>Aparece como <b>Starboy</b>.</p><div class="nv-scroll"><table><tr><td>Serviço</td><td><code>7a1c0001-5b1a-4c3e-9d7a-1f0e5a5e0001</code></td></tr><tr><td>RX (site → placa)</td><td><code>7a1c0002-…0001</code></td></tr><tr><td>TX (placa → site)</td><td><code>7a1c0003-…0001</code></td></tr></table></div><h3>Comandos</h3><div class="nv-scroll"><table><tr><th>Cmd</th><th>Formato</th><th>O que faz</th></tr><tr><td><code>0x01</code></td><td><code>[0x01, 1..129]</code></td><td>Dispara uma reação (16 = troca de rosto, 129 = carregando/conectado)</td></tr><tr><td><code>0x02</code></td><td><code>[0x02, bits]</code></td><td>Liga/desliga automático: 1 reações, 2 piscar, 4 olhar, 8 microfone</td></tr><tr><td><code>0x03</code></td><td><code>[0x03, R, G, B, fixo]</code></td><td>Cor do olho</td></tr><tr><td><code>0x06</code></td><td><code>[0x06, 0/1]</code></td><td>Modo manual (controle total)</td></tr><tr><td><code>0x07</code></td><td><code>[0x07, ativo, x, y]</code></td><td>Olhar externo</td></tr><tr><td><code>0x09</code></td><td><code>[0x09]</code></td><td>Piscar agora</td></tr><tr><td><code>0x0A</code></td><td><code>[0x0A, 0..76, fixo]</code></td><td>Escolhe o rosto (fixo=1 trava; 0 vira o rosto de casa)</td></tr><tr><td><code>0x0B</code></td><td><code>[0x0B, 0/1]</code></td><td>Simula tirar/pôr na tomada (animação de carga)</td></tr></table></div><h3>Comportamento</h3><ul><li>Pisca a cada 2,3 a 4,3 s; reação a cada 40–60 s</li><li>Troca de rosto sozinho a cada 1 a 3 minutos</li><li>Conectar o celular dispara a animação de conexão</li><li>Ao ligar: logo, bolinha quicando, manchas, roleta de rostos</li></ul></section></main>
+<script src="js/products.js"></script>
+<script src="js/eyes.js"></script>
+<script src="js/main.js"></script>
+<script src="js/reacoes.js"></script>
+<script src="js/reacoes2.js"></script>
+<script src="js/dados.js"></script>
+<script src="js/novas.js"></script>
+<script src="js/extras.js"></script>
+</body>
+</html>
