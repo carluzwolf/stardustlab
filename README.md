@@ -18,3 +18,7 @@ Site estático (HTML + CSS + JS puro). Sem build, sem dependências.
 - As imagens ficam escritas direto no HTML (`<img>` com `alt`, `title`, `width`/`height`), sem JavaScript, para o Google conseguir ler.
 - `galeria.html` tem dados estruturados (ImageGallery/ImageObject) e o `sitemap.xml` lista as imagens de cada página.
 - Para trocar ou acrescentar imagens: coloque o arquivo `.webp` em `assets/galeria/`, crie um `<figure class="gi">` em `galeria.html` e inclua a imagem no `sitemap.xml`.
+
+## Atualizado para o firmware Starboy v14
+- 129 reações e 77 rostos (dados em `js/dados.js`, gerados do firmware).
+- Páginas novas: `reacoes.html`, `olhares.html`, `novidades.html`, `tecnico.html` (estilo em `css/novas.css`, lógica em `js/novas.js`).
