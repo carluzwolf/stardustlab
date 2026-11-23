@@ -24,12 +24,12 @@ window.KARLU_PRODUCTS = [
     react: ['happy', 'wink', 'cute'],
     holdReact: 'happy',
     tagline: 'O olhar que ganha vida.',
-    short: 'O bichinho virtual de olhos animados para levar no chaveiro, na mochila ou na calça. Display redondo e 78 reações.',
+    short: 'O bichinho virtual de olhos animados para levar no chaveiro, na mochila ou na calça. Display redondo e 129 reações.',
     long: 'A versão essencial do Karlu traz o coração do projeto: um bichinho virtual de olhos expressivos que piscam, olham em volta, mudam de humor e reagem sozinhos. Um acessório tecnológico para levar com você e começar a sua coleção.',
     features: [
       'Display redondo 1,28" com olhos animados em alta definição',
-      '24 combinações de cores de olhos (inclusive heterocromia)',
-      '78 reações: risada, sono, susto, paixão, bravo, tonto e muito mais',
+      '77 rostos de olhos (inclusive heterocromia)',
+      '129 reações: risada, sono, susto, paixão, bravo, tonto e muito mais',
       'Piscadas, olhares e humores naturais, nunca repetitivos',
       'Troca de rosto com nuvem de fumaça a cada 1 a 3 minutos',
       'Controle por Bluetooth: escolha cores e reações do celular',
@@ -81,7 +81,7 @@ window.KARLU_PRODUCTS = [
 // tabela de comparacao (linhas) - true / false por versao [v1, v2, v3]
 window.KARLU_COMPARE = [
   ['Display redondo com olhos animados', [true, true, true]],
-  ['24 cores de olhos + 78 reações', [true, true, true]],
+  ['77 rostos de olhos + 129 reações', [true, true, true]],
   ['Controle por Bluetooth', [true, true, true]],
   ['Microfone amplificador de voz', [false, true, true]],
   ['Alto-falante', [false, true, true]],
