@@ -1,6 +1,6 @@
 /* Service worker do Karlu: rede primeiro, cache como reserva (funciona offline depois da primeira visita) */
 var V = 'karlu-v1';
-var CORE = ['configurar.html', 'criar.html', 'ajuda.html', 'css/style.css', 'css/configurar.css', 'css/extras.css', 'js/products.js', 'js/eyes.js', 'js/main.js', 'js/reacoes.js', 'js/reacoes2.js', 'js/configurar.js', 'js/share.js', 'js/criar.js', 'js/extras.js', 'assets/logo-color.png', 'assets/logo-bw.png', 'assets/favicon.png'];
+var CORE = ['configurar.html', 'criar.html', 'reacoes.html', 'olhares.html', 'novidades.html', 'tecnico.html', 'css/novas.css', 'js/dados.js', 'js/novas.js', 'ajuda.html', 'css/style.css', 'css/configurar.css', 'css/extras.css', 'js/products.js', 'js/eyes.js', 'js/main.js', 'js/reacoes.js', 'js/reacoes2.js', 'js/configurar.js', 'js/share.js', 'js/criar.js', 'js/extras.js', 'assets/logo-color.png', 'assets/logo-bw.png', 'assets/favicon.png'];
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(V).then(function (c) { return Promise.all(CORE.map(function (u) { return c.add(u).catch(function () {}); })); }).then(function () { return self.skipWaiting(); }));
 });
