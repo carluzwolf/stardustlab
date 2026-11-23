@@ -1,0 +1,24 @@
+.nv-main{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:32px;align-items:start;padding:24px 0 72px}
+.nv-stage{position:sticky;top:84px;text-align:center}
+.nv-cap{margin-top:14px;font-weight:600;color:var(--muted,#777)}
+.nv-bar input{width:100%;padding:14px 18px;border-radius:999px;border:1.5px solid var(--line,#e5e5e5);background:var(--bg-2,#f6f6f6);color:inherit;font:inherit}
+.nv-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.nv-chips button{padding:8px 14px;border-radius:999px;background:var(--bg-2,#f2f2f2);font-weight:600;font-size:14px}
+.nv-chips button.on{background:var(--pink);color:#fff}
+.nv-count{font-size:14px;opacity:.7;margin:4px 0 10px}
+.nv-grid{max-height:none}
+.nv-fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.nv-fgrid button{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px;border-radius:16px;background:var(--bg-2,#f4f4f4);text-align:left;font-size:13px;font-weight:600}
+.nv-fgrid button.on{outline:3px solid var(--pink)}
+.nv-sw{display:flex;gap:6px}.nv-sw i{width:34px;height:34px;border-radius:50%;display:block;border:2px solid #0002}
+.nv-tl{max-width:760px;padding:16px 0 72px}
+.nv-item{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--line,#e5e5e5)}
+.nv-item>b{flex:0 0 64px;height:64px;border-radius:18px;background:var(--pink);color:#fff;display:grid;place-items:center;font-size:20px}
+.nv-item h3{margin:0 0 6px}.nv-item p{margin:0;line-height:1.55}
+.nv-nums{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:32px;text-align:center}
+.nv-nums strong{display:block;font-size:30px;color:var(--pink)}
+.nv-tec{display:grid;gap:20px;max-width:860px;padding:16px 0 72px}
+.nv-scroll{overflow-x:auto}.nv-tec table{border-collapse:collapse;width:100%;font-size:14px}
+.nv-tec td,.nv-tec th{padding:8px 10px;border-bottom:1px solid var(--line,#e5e5e5);text-align:left;vertical-align:top}
+.nv-tec code{font-size:12.5px;word-break:break-all}
+@media(max-width:760px){.nv-main{grid-template-columns:1fr}.nv-stage{position:static}.nv-nums{grid-template-columns:repeat(2,1fr)}}
